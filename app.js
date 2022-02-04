@@ -42,12 +42,12 @@ app.get("/", async (req, res, next) => {
 app.get("/:shortId", async (req, res, next) => {
   try {
     const { shortId } = req.params;
+    console.log(shortId);
     const result = await shortUrl.findOne({ shortId });
     if (!result) {
       throw createHttpError.NotFound("Short URL does not exist");
     }
-    console.log(result.shortId);
-    res.render(result.shortId);
+    res.redirect(result.url);
   } catch (error) {
     next(error);
   }
@@ -63,16 +63,16 @@ app.post("/", async (req, res, next) => {
     const urlExist = await shortUrl.findOne({ url });
     if (urlExist) {
       res.render("index", {
-        short_url: `${req.headers.host}/${urlExists.shortId}`,
-        // short_url: `http://localhost:${PORT}/${urlExist.shortId}`,
+        // short_url: `${req.headers.host}/${urlExists.shortId}`,
+        short_url: `https://hg4.herokuapp.com//${urlExist.shortId}`,
       });
       return;
     }
     const ShortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
-      short_url: `${req.headers.host}/${result.shortId}`,
-      //   short_url: `http://localhost:${PORT}/${result.shortId}`,
+      //   short_url: `${req.headers.host}/${result.shortId}`,
+      short_url: `https://hg4.herokuapp.com//${result.shortId}`,
     });
   } catch (error) {
     next(error);
