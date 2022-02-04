@@ -1,10 +1,10 @@
 # 🔥 Custom-URL-Shrinker
 
-Make any long URL short, also can give your custom slug-key. ![https://hg4.herokuapp.com/](link)
+Make any long URL short, also can give your custom slug-key. [Link](https://hg4.herokuapp.com/)
 
 ## Demo
 
-![https://hg4.herokuapp.com/](url-shortener.gif)
+![](url-shortener.gif)
 
 ## Tech Stack
 
