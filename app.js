@@ -46,7 +46,7 @@ app.get("/:shortId", async (req, res, next) => {
     if (!result) {
       throw createHttpError.NotFound("Short URL does not exist");
     }
-    res.redirect(result.url);
+    res.render("index", result.url);
   } catch (error) {
     next(error);
   }
