@@ -44,21 +44,30 @@ app.get("/", async (req, res, next) => {
 app.post("/", async (req, res, next) => {
   try {
     const { url } = req.body;
+    const { custom_id } = req.body;
     if (!validURL(url)) {
       throw createHttpError.BadRequest("Provide a valid url");
     }
     const urlExist = await shortUrl.findOne({ url });
     if (urlExist) {
       res.render("index", {
-        // short_url: `https://localhost:3000/${urlExist.shortId}`,
+        // short_url: `http://localhost:3000/${urlExist.shortId}`,
         short_url: `https://hg4.herokuapp.com/${urlExist.shortId}`,
       });
       return;
     }
-    const ShortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
+    let id = shortId.generate();
+    if (custom_id) {
+      const custom = await shortUrl.findOne({ shortId: custom_id });
+      if (custom) {
+        throw createHttpError.BadRequest("Custom-id already taken");
+      }
+      id = custom_id;
+    }
+    const ShortUrl = new shortUrl({ url: url, shortId: id });
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
-      // short_url: `https://localhost:3000/${result.shortId}`,
+      // short_url: `http://localhost:3000/${result.shortId}`,
       short_url: `https://hg4.herokuapp.com/${result.shortId}`,
     });
   } catch (error) {
