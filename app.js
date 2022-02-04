@@ -39,6 +39,19 @@ app.get("/", async (req, res, next) => {
   res.render("index");
 });
 
+app.get("/:shortId", async (req, res, next) => {
+  try {
+    const { shortId } = req.params;
+    const result = await shortUrl.findOne({ shortId: shortId });
+    if (!result) {
+      throw createHttpError.NotFound("Short URL does not exist");
+    }
+    res.redirect(result.url);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // @POST
 app.post("/", async (req, res, next) => {
   try {
@@ -63,19 +76,7 @@ app.post("/", async (req, res, next) => {
   }
 });
 
-app.get("/:shortId", async (req, res, next) => {
-  try {
-    const { shortId } = req.params;
-    const result = await shortUrl.findOne({ shortId: shortId });
-    if (!result) {
-      throw createHttpError.NotFound("Short URL does not exist");
-    }
-    res.redirect(result.url);
-  } catch (error) {
-    next(error);
-  }
-});
-
+// @APP-USE
 app.use((req, res, next) => {
   next(createHttpError.NotFound());
 });
