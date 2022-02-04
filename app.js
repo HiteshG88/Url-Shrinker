@@ -62,14 +62,16 @@ app.post("/", async (req, res, next) => {
     const urlExist = await shortUrl.findOne({ url });
     if (urlExist) {
       res.render("index", {
-        short_url: `http://localhost:${PORT}/${urlExist.shortId}`,
+        short_url: `${req.hostname}/${urlExists.shortId}`,
+        // short_url: `http://localhost:${PORT}/${urlExist.shortId}`,
       });
       return;
     }
     const ShortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
-      short_url: `http://localhost:${PORT}/${result.shortId}`,
+      short_url: `${req.hostname}/${result.shortId}`,
+      //   short_url: `http://localhost:${PORT}/${result.shortId}`,
     });
   } catch (error) {
     next(error);
