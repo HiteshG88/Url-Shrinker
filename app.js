@@ -64,7 +64,7 @@ app.post("/", async (req, res, next) => {
     if (urlExist) {
       res.render("index", {
         // short_url: `${req.headers.host}/${urlExists.shortId}`,
-        short_url: `https://hg4.herokuapp.com//${urlExist.shortId}`,
+        short_url: `https://hg4.herokuapp.com/${urlExist.shortId}`,
       });
       return;
     }
@@ -72,7 +72,7 @@ app.post("/", async (req, res, next) => {
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
       //   short_url: `${req.headers.host}/${result.shortId}`,
-      short_url: `https://hg4.herokuapp.com//${result.shortId}`,
+      short_url: `https://hg4.herokuapp.com/${result.shortId}`,
     });
   } catch (error) {
     next(error);
