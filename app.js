@@ -51,7 +51,7 @@ app.post("/", async (req, res, next) => {
     if (urlExist) {
       res.render("index", {
         // short_url: `https://localhost:3000/${urlExist.shortId}`,
-        short_url: `https://hg4.in/${urlExist.shortId}`,
+        short_url: `http://hg4.in/${urlExist.shortId}`,
       });
       return;
     }
@@ -59,7 +59,7 @@ app.post("/", async (req, res, next) => {
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
       // short_url: `https://localhost:3000/${result.shortId}`,
-      short_url: `https://hg4.in/${result.shortId}`,
+      short_url: `http://hg4.in/${result.shortId}`,
     });
   } catch (error) {
     next(error);
