@@ -46,7 +46,7 @@ app.get("/:shortId", async (req, res, next) => {
     if (!result) {
       throw createHttpError.NotFound("Short URL does not exist");
     }
-    res.render("index", result.url);
+    res.redirect(result.url);
   } catch (error) {
     next(error);
   }
@@ -62,7 +62,7 @@ app.post("/", async (req, res, next) => {
     const urlExist = await shortUrl.findOne({ url });
     if (urlExist) {
       res.render("index", {
-        short_url: `${req.hostname}/${urlExists.shortId}`,
+        short_url: `${PORT}/${urlExists.shortId}`,
         // short_url: `http://localhost:${PORT}/${urlExist.shortId}`,
       });
       return;
@@ -70,7 +70,7 @@ app.post("/", async (req, res, next) => {
     const ShortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
-      short_url: `${req.hostname}/${result.shortId}`,
+      short_url: `${PORT}/${result.shortId}`,
       //   short_url: `http://localhost:${PORT}/${result.shortId}`,
     });
   } catch (error) {
