@@ -4,9 +4,9 @@ html {
   padding: 0;
 }
 
-/* body {
-  background-color: #04293a;
-} */
+body {
+  background-color: #fff8f3;
+}
 
 .error {
   height: 40px;
@@ -49,6 +49,6 @@ h1 {
   width: 300px;
 }
 
-/* .github {
-  color: ;
-} */
+.github {
+  color: black;
+}
