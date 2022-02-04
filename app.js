@@ -42,11 +42,12 @@ app.get("/", async (req, res, next) => {
 app.get("/:shortId", async (req, res, next) => {
   try {
     const { shortId } = req.params;
-    const result = await shortUrl.findOne({ shortId: shortId });
+    const result = await shortUrl.findOne({ shortId });
     if (!result) {
       throw createHttpError.NotFound("Short URL does not exist");
     }
-    res.redirect(result.url);
+    console.log(result.shortId);
+    res.render(result.shortId);
   } catch (error) {
     next(error);
   }
