@@ -40,19 +40,6 @@ app.get("/", async (req, res, next) => {
   res.render("index");
 });
 
-// function validURL(str) {
-//   var pattern = new RegExp(
-//     "^(https?:\\/\\/)?" + // protocol
-//       "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-//       "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-//       "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-//       "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-//       "(\\#[-a-z\\d_]*)?$",
-//     "i"
-//   ); // fragment locator
-//   return !!pattern.test(str);
-// }
-
 // @POST
 app.post("/", async (req, res, next) => {
   try {
@@ -64,7 +51,7 @@ app.post("/", async (req, res, next) => {
     if (urlExist) {
       res.render("index", {
         // short_url: `https://localhost:3000/${urlExist.shortId}`,
-        short_url: `https://hg4.herokuapp.com/${urlExist.shortId}`,
+        short_url: `https://hg4.in/${urlExist.shortId}`,
       });
       return;
     }
@@ -72,7 +59,7 @@ app.post("/", async (req, res, next) => {
     const result = await ShortUrl.save(); // save the shortId to MongoDb
     res.render("index", {
       // short_url: `https://localhost:3000/${result.shortId}`,
-      short_url: `https://hg4.herokuapp.com/${result.shortId}`,
+      short_url: `https://hg4.in/${result.shortId}`,
     });
   } catch (error) {
     next(error);
