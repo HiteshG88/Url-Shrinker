@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const shortUrl = require("./models/url.model");
 const createHttpError = require("http-errors");
 const shortId = require("shortid");
+const { findOne } = require("./models/url.model");
 require("dotenv").config();
 
 const app = express();
@@ -18,16 +19,21 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 
 // @MONGO-DB Connection
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
-mongoose
-  .connect(mongoUrl, {
-    dbName: "url-shrinker",
-  })
-  .then(() => console.log("mongodb connected..."))
-  .catch(() => console.log("Error Connecting to mongodb"));
+const connectMongoDb = async () => {
+  const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
+  try {
+    await mongoose.connect(mongoUrl, {
+      useNewUrlParser: true,
+    });
+    console.log("mongodb connected...");
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+connectMongoDb();
 
 // @ROUTES
-
 // @GET
 app.get("/", async (req, res, next) => {
   res.render("index");
