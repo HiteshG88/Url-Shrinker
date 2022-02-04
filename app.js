@@ -5,6 +5,7 @@ const shortUrl = require("./models/url.model");
 const createHttpError = require("http-errors");
 const shortId = require("shortid");
 const { findOne } = require("./models/url.model");
+const validURL = require("./url_validate");
 require("dotenv").config();
 
 const app = express();
@@ -39,25 +40,24 @@ app.get("/", async (req, res, next) => {
   res.render("index");
 });
 
-app.get("/:shortId", async (req, res, next) => {
-  try {
-    const { shortId } = req.params;
-    console.log(shortId);
-    const result = await shortUrl.findOne({ shortId });
-    if (!result) {
-      throw createHttpError.NotFound("Short URL does not exist");
-    }
-    res.redirect(result.url);
-  } catch (error) {
-    next(error);
-  }
-});
+// function validURL(str) {
+//   var pattern = new RegExp(
+//     "^(https?:\\/\\/)?" + // protocol
+//       "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+//       "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+//       "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+//       "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+//       "(\\#[-a-z\\d_]*)?$",
+//     "i"
+//   ); // fragment locator
+//   return !!pattern.test(str);
+// }
 
 // @POST
 app.post("/", async (req, res, next) => {
   try {
     const { url } = req.body;
-    if (!url) {
+    if (!validURL(url)) {
       throw createHttpError.BadRequest("Provide a valid url");
     }
     const urlExist = await shortUrl.findOne({ url });
@@ -74,6 +74,19 @@ app.post("/", async (req, res, next) => {
       // short_url: `https://localhost:3000/${result.shortId}`,
       short_url: `https://hg4.herokuapp.com/${result.shortId}`,
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/:shortId", async (req, res, next) => {
+  try {
+    const { shortId } = req.params;
+    const result = await shortUrl.findOne({ shortId });
+    if (!result) {
+      throw createHttpError.NotFound("Short URL doesn't exist");
+    }
+    res.redirect(result.url);
   } catch (error) {
     next(error);
   }

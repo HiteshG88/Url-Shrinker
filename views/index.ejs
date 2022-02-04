@@ -28,7 +28,6 @@
       <h1>URL Shrinker</h1>
 
       <% if (locals.error) { %>
-      <!-- <p class="error"><%= error %> </p> -->
       <div class="error alert alert-danger" role="alert"> <%= error %> </div>
       <% } %>
 
@@ -48,7 +47,6 @@
             name="url"
             id="url"
             placeholder="long url here...."
-            required
           />
         </div>
         <div class="input-group mb-3">
@@ -109,7 +107,10 @@
 
     <footer>
       <span>Hitesh gupta &copy; 2022</span>
-      <a class="github" href="https://github.com/HiteshG88/Url-Shrinker"
+      <a
+        class="github"
+        target="__blank"
+        href="https://github.com/HiteshG88/Url-Shrinker"
         >github</a
       >
     </footer>
